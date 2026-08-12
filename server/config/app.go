@@ -9,4 +9,3 @@ func NewApp() *App {
 		Settings: newEnvSettings(),
 	}
 }
-

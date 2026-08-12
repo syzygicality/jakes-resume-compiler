@@ -19,6 +19,8 @@ func main() {
 	app := config.NewApp()
 	mux := http.NewServeMux()
 
+	middleware.SetupLogger(app.Settings.Prod)
+
 	mux.HandleFunc("GET /ping", ping)
 
 	var handler http.Handler = middleware.SetupMiddleware(mux, app)
