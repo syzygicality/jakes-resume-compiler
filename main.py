@@ -1,3 +1,4 @@
+"""
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel
@@ -45,3 +46,4 @@ def compile_latex(req: LatexRequest) -> Response:
             pdf_bytes = f.read()
 
     return Response(content=pdf_bytes, media_type="application/pdf")
+"""
