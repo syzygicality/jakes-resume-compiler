@@ -8,6 +8,7 @@ import (
 type EnvSettings struct {
 	APIKey string
 	Prod   bool
+	Auth   bool
 }
 
 func MustGetKey(key string) string {
@@ -31,8 +32,13 @@ func newEnvSettings() EnvSettings {
 	if err != nil {
 		panic(err)
 	}
+	auth, err := strconv.ParseBool(GetKey("AUTH", "true"))
+	if err != nil {
+		panic(err)
+	}
 	return EnvSettings{
 		APIKey: MustGetKey("API_KEY"),
 		Prod:   prod,
+		Auth:   auth,
 	}
 }

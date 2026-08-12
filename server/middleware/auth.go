@@ -14,7 +14,7 @@ func authMiddleware(app *config.App) Middleware {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			requestAPIKey := r.Header.Get("X-API-Key")
 
-			if requestAPIKey != app.Settings.APIKey && !publicRoutes[r.URL.Path] {
+			if app.Settings.Auth && requestAPIKey != app.Settings.APIKey && !publicRoutes[r.URL.Path] {
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}

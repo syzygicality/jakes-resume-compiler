@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"time"
@@ -16,6 +17,9 @@ func ping(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("no .env file found, using system env vars")
+	}
 	app := config.NewApp()
 	mux := http.NewServeMux()
 
