@@ -16,6 +16,7 @@ func chain(h http.Handler, mws ...Middleware) http.Handler {
 
 func SetupMiddleware(mux http.Handler, app *config.App) http.Handler {
 	return chain(mux,
+		recoveryMiddleware,
 		loggingMiddleware,
 		contentTypeMiddleware,
 		authMiddleware(app),
