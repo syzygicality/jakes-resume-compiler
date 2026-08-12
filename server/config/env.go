@@ -24,8 +24,8 @@ func GetKey(key, fallback string) string {
 	return val
 }
 
-func NewEnvSettings() *EnvSettings {
-	return &EnvSettings{
+func newEnvSettings() EnvSettings {
+	return EnvSettings{
 		APIKey: MustGetKey("API_KEY"),
 	}
 }
