@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"jakes-resume-compiler/server/config"
-	"jakes-resume-compiler/server/middleware"
+	"jakes-resume-compiler/server/platform/config"
+	"jakes-resume-compiler/server/platform/middleware"
 )
 
 func ping(w http.ResponseWriter, r *http.Request) {
