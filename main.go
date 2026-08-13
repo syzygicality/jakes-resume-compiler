@@ -1,20 +1,16 @@
 package main
 
 import (
-	"encoding/json"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"time"
 
+	"github.com/joho/godotenv"
+
+	"jakes-resume-compiler/server/health"
 	"jakes-resume-compiler/server/platform/config"
 	"jakes-resume-compiler/server/platform/middleware"
 )
-
-func ping(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"message": "PONG"})
-}
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -23,9 +19,9 @@ func main() {
 	app := config.NewApp()
 	mux := http.NewServeMux()
 
-	middleware.SetupLogger(app.Settings.Prod)
+	health.SetupHandlers(mux)
 
-	mux.HandleFunc("GET /ping", ping)
+	middleware.SetupLogger(app.Settings.Prod)
 
 	var handler http.Handler = middleware.SetupMiddleware(mux, app)
 
