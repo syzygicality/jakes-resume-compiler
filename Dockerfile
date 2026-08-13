@@ -1,16 +1,18 @@
-# ---- Stage 1: build Python deps ----
-FROM python:3.13-slim AS builder
+# syntax=docker/dockerfile:1
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+# ---- Stage 1: build Go binary ----
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock main.py ./
+COPY go.mod go.sum ./
+RUN go mod download
 
-RUN uv sync --frozen
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /app/compiler .
 
 # ---- Stage 2: final runtime image ----
-FROM python:3.13-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-latex-base \
@@ -23,15 +25,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Debian's texlive packages are dpkg-managed, so tlmgr refuses to touch
 # the system tree and requires an explicit user-mode tree (installs into
 # $HOME/texmf, i.e. /root/texmf here, which is already on the default
-# kpsewhich search path). Installing directly in the final stage (rather
-# than a separate stage + multi-path COPY) avoids having to reconstruct
-# Debian's scattered texlive layout (binaries, symlinks, and config
-# spread across /usr/bin, /usr/share/texlive, /etc/texmf, /var/lib/texmf)
-# by hand.
+# kpsewhich search path).
 #
 # Pin to the TeX Live 2025 historic archive, matching the release apt
-# installed via texlive-latex-base. The live/rolling CTAN mirror tracks
-# whatever the current year is and will refuse cross-release installs.
+# installed via texlive-latex-base on trixie. The live/rolling CTAN
+# mirror tracks whatever the current year is and will refuse
+# cross-release installs, and bookworm's texlive-latex-base is 2022,
+# which also fails against this pinned archive.
 RUN tlmgr init-usertree \
     && tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2025/tlnet-final \
     && tlmgr install \
@@ -44,8 +44,9 @@ RUN tlmgr init-usertree \
         fontawesome \
     && rm -rf /root/texmf/web2c/*.log
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
-COPY --from=builder /app /app
+COPY --from=builder /app/compiler /app/compiler
 
-CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8080
+
+CMD ["/app/compiler"]
