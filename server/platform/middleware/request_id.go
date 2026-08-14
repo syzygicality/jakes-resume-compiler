@@ -5,19 +5,11 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"net/http"
+
+	"jakes-resume-compiler/server/platform/utils"
 )
 
-type contextKey string
-
-const requestIDKey contextKey = "requestID"
 const requestIDHeader = "X-Request-ID"
-
-func GetRequestID(ctx context.Context) string {
-	if id, ok := ctx.Value(requestIDKey).(string); ok {
-		return id
-	}
-	return ""
-}
 
 func requestIDMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +24,7 @@ func requestIDMiddleware(next http.Handler) http.Handler {
 			}
 		}
 
-		ctx := context.WithValue(r.Context(), requestIDKey, reqID)
+		ctx := context.WithValue(r.Context(), utils.RequestIDKey, reqID)
 
 		w.Header().Set(requestIDHeader, reqID)
 

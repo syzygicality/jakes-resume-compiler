@@ -1,22 +1,20 @@
 package middleware
 
 import (
-	"log/slog"
+	"fmt"
+	"jakes-resume-compiler/server/platform/utils"
 	"net/http"
-	"runtime/debug"
 )
 
 func recoveryMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
-			if err := recover(); err != nil {
-				slog.Error("panic recovered",
-					"error", err,
-					"stack", string(debug.Stack()),
-					"path", r.URL.Path,
-					"method", r.Method,
-				)
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			if rec := recover(); rec != nil {
+				err, ok := rec.(error)
+				if !ok {
+					err = fmt.Errorf("%v", rec)
+				}
+				utils.HTTPError(err, w, r, "panic recovered", http.StatusInternalServerError)
 			}
 		}()
 		next.ServeHTTP(w, r)
