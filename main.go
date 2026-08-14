@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"jakes-resume-compiler/server/compiler"
 	"jakes-resume-compiler/server/health"
 	"jakes-resume-compiler/server/platform/config"
 	"jakes-resume-compiler/server/platform/middleware"
@@ -20,6 +21,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	health.SetupHandlers(mux)
+
+	compiler.SetupHandlers(mux)
 
 	middleware.SetupLogger(app.Settings.Prod)
 
