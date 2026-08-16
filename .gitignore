@@ -27,6 +27,13 @@ go.work.sum
 # env file
 .env
 
+# LaTeX build artifacts (*.out already covered above)
+*.fmt
+*.aux
+*.log
+*.fdb_latexmk
+*.fls
+
 # Editor/IDE
 # .idea/
 # .vscode/

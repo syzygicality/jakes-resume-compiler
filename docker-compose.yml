@@ -11,6 +11,7 @@ services:
   api-image:
     platform: linux/amd64
     image: ghcr.io/syzygicality/jakes-resume-compiler:latest
+    pull_policy: always
     ports:
       - "8081:8080"
     restart: unless-stopped

@@ -13,7 +13,13 @@ import (
 	"jakes-resume-compiler/server/platform/utils"
 )
 
-const compileTimeout = 30 * time.Second
+// Must stay below main.go's WriteTimeout, or the write deadline fires first and
+// the 504 never reaches the client.
+const compileTimeout = 5 * time.Second
+
+// Preamble precompiled by the Dockerfile's fmt-builder stage. Named, not pathed:
+// TEXFORMATS resolves it.
+const baseFormat = "base"
 
 func SetupHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("POST /compile", compileHandler)
@@ -23,6 +29,12 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 	lr, err := utils.DecodeAndValidate[latexRequest](r)
 	if err != nil {
 		utils.HTTPError(err, w, r, "dto failure", http.StatusBadRequest)
+		return
+	}
+
+	source, err := trimToDocument(lr.Source)
+	if err != nil {
+		utils.HTTPError(err, w, r, "source validation failure", http.StatusBadRequest)
 		return
 	}
 
@@ -42,7 +54,7 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	texPath := tex.Name()
 
-	if _, err := tex.Write([]byte(lr.Source)); err != nil {
+	if _, err := tex.Write([]byte(source)); err != nil {
 		tex.Close()
 		utils.HTTPError(err, w, r, ".tex file write failure", http.StatusInternalServerError)
 		return
@@ -59,6 +71,7 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 
 	cmd := exec.CommandContext(ctx,
 		"pdflatex",
+		"-fmt="+baseFormat,
 		"-interaction=nonstopmode",
 		"-no-shell-escape",
 		"-output-directory", dir,
@@ -72,7 +85,10 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, statErr := os.Stat(pdfPath); statErr != nil {
+	// A source yielding no pages exits 0 with a zero-byte PDF, so existence alone
+	// would serve it as a 200.
+	info, statErr := os.Stat(pdfPath)
+	if statErr != nil || info.Size() == 0 {
 		utils.HTTPError(runErr, w, r, "pdflatex compile failure: "+string(stdout), http.StatusUnprocessableEntity)
 		return
 	}
