@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"jakes-resume-compiler/server/platform/utils"
+	"jakes-resume-compiler/server/http/platform/utils"
 	"net/http"
 )
 

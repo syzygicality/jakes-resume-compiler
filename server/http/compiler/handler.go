@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"jakes-resume-compiler/server/platform/utils"
+	"jakes-resume-compiler/server/http/platform/utils"
 )
 
 // Must stay below main.go's WriteTimeout, or the write deadline fires first and

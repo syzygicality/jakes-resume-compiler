@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"net/http"
 
-	"jakes-resume-compiler/server/platform/utils"
+	"jakes-resume-compiler/server/http/platform/utils"
 )
 
 const requestIDHeader = "X-Request-ID"
