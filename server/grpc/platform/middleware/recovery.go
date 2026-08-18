@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"jakes-resume-compiler/server/grpc/platform/utils"
 )
@@ -15,7 +15,7 @@ func recoveryInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInf
 		if rec := recover(); rec != nil {
 			recErr, ok := rec.(error)
 			if !ok {
-				recErr = status.Errorf(codes.Internal, "%v", rec)
+				recErr = fmt.Errorf("%v", rec)
 			}
 			err = utils.ServerError(recErr, info.FullMethod, "panic recovered", codes.Internal)
 		}
