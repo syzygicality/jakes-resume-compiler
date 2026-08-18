@@ -14,7 +14,9 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("no .env file found, using system env vars")
 	}
+
 	app := config.NewApp()
+
 	if app.Settings.Mode == "HTTP" {
 		http.Start(app)
 	} else {
