@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"jakes-resume-compiler/server/config"
 	"log/slog"
 	"net/http"
 	"os"
@@ -25,6 +26,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(rec, r)
 
 		slog.Info("request",
+			"request_id", config.GetRequestID(r.Context()),
 			"method", r.Method,
 			"path", r.URL.Path,
 			"status", rec.status,
