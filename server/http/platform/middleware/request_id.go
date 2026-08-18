@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"net/http"
 
-	"jakes-resume-compiler/server/http/platform/utils"
+	"jakes-resume-compiler/server/config"
 )
 
 const requestIDHeader = "X-Request-ID"
@@ -24,7 +24,7 @@ func requestIDMiddleware(next http.Handler) http.Handler {
 			}
 		}
 
-		ctx := context.WithValue(r.Context(), utils.RequestIDKey, reqID)
+		ctx := context.WithValue(r.Context(), config.RequestIDKey, reqID)
 
 		w.Header().Set(requestIDHeader, reqID)
 

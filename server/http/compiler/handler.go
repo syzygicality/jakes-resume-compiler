@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/http/platform/utils"
 )
 
@@ -38,7 +39,7 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	reqID := utils.GetRequestID(r.Context())
+	reqID := config.GetRequestID(r.Context())
 
 	dir, err := os.MkdirTemp("", "resume-dir")
 	if err != nil {
