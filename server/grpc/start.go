@@ -8,6 +8,7 @@ import (
 
 	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/grpc/health"
+	"jakes-resume-compiler/server/grpc/platform/middleware"
 )
 
 func Start(app *config.App) {
@@ -16,13 +17,11 @@ func Start(app *config.App) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	srv := grpc.NewServer()
+	srv := grpc.NewServer(middleware.SetupInterceptors(app))
 
 	health.RegisterServer(srv)
 
 	// TODO: register compiler service (generated from .proto)
-
-	// TODO: interceptor chain (recovery, request ID, logging, auth), mirroring server/http/platform/middleware
 
 	log.Println("listening on :8080")
 
