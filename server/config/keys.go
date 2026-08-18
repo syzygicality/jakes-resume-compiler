@@ -8,9 +8,11 @@ import (
 
 type contextKey string
 
-const RequestIDKey contextKey = "requestID"
+const APIKeyHeader = "X-API-Key"
 
 const RequestIDHeader = "X-Request-ID"
+
+const RequestIDKey contextKey = "requestID"
 
 func NewRequestID() (reqID string) {
 	bytes := make([]byte, 16)

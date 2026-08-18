@@ -18,8 +18,8 @@ func loggingInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo
 	st, _ := status.FromError(err)
 
 	slog.Info("request",
-		"method", info.FullMethod,
 		"request_id", config.GetRequestID(ctx),
+		"method", info.FullMethod,
 		"duration", time.Since(start),
 		"code", st.Code(),
 		"error", err,
