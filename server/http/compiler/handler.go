@@ -19,7 +19,7 @@ const compileTimeout = 5 * time.Second
 
 // Preamble precompiled by the Dockerfile's fmt-builder stage. Named, not pathed:
 // TEXFORMATS resolves it.
-const baseFormat = "base"
+const preambleFormat = "preamble"
 
 func SetupHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("POST /compile", compileHandler)
@@ -71,7 +71,7 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 
 	cmd := exec.CommandContext(ctx,
 		"pdflatex",
-		"-fmt="+baseFormat,
+		"-fmt="+preambleFormat,
 		"-interaction=nonstopmode",
 		"-no-shell-escape",
 		"-output-directory", dir,

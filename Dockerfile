@@ -46,31 +46,31 @@ RUN tlmgr init-usertree \
 
 # ---- Stage 3: precompile the resume preamble into a LaTeX format file ----
 #
-# Dumping base.tex here lets per-request runs skip parsing hyperref, babel,
+# Dumping preamble.tex here lets per-request runs skip parsing hyperref, babel,
 # fontawesome and friends. Kept in its own stage so the -ini run's .log/.aux
 # droppings stay out of the runtime image.
 FROM texlive AS fmt-builder
 
 WORKDIR /fmt
-COPY latex/base.tex ./base.tex
+COPY latex/preamble.tex ./preamble.tex
 
 # nonstopmode matches compileHandler, letting the dump survive the same
 # recoverable errors a live compile tolerates (hyperref 7.01p probing
 # \IfDocumentMetadataT, undefined in Debian's 2024-11-01 kernel). That exits
-# nonzero even on a good dump, so gate on base.fmt instead.
-RUN pdftex -ini -interaction=nonstopmode -jobname=base "&pdflatex" base.tex; \
-    test -s base.fmt || { cat base.log; echo "base.fmt was not dumped"; exit 1; }
+# nonzero even on a good dump, so gate on preamble.fmt instead.
+RUN pdftex -ini -interaction=nonstopmode -jobname=preamble "&pdflatex" preamble.tex; \
+    test -s preamble.fmt || { cat preamble.log; echo "preamble.fmt was not dumped"; exit 1; }
 
 # ---- Stage 4: final runtime image ----
 FROM texlive AS runtime
 
 # Give the format its own search path so pdflatex resolves it as plain
-# `-fmt=base`; the trailing colon appends kpathsea's compiled-in default.
+# `-fmt=preamble`; the trailing colon appends kpathsea's compiled-in default.
 # Deliberately outside the texmf trees: those carry a `!!` prefix (ls-R only) in
 # texmf.cnf, and kpathsea dedupes a plain entry against its `!!` twin, so a
 # format dropped in one is invisible unless mktexlsr is also run.
 ENV TEXFORMATS=/opt/texfmt:
-COPY --from=fmt-builder /fmt/base.fmt /opt/texfmt/base.fmt
+COPY --from=fmt-builder /fmt/preamble.fmt /opt/texfmt/preamble.fmt
 
 WORKDIR /app
 COPY --from=builder /app/compiler /app/compiler
