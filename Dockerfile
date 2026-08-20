@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # cross-release installs, and bookworm's texlive-latex-base is 2022,
 # which also fails against this pinned archive.
 RUN tlmgr init-usertree \
-    && tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2025/tlnet-final \
+    && tlmgr option repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2025/tlnet-final \
     && tlmgr install \
         titlesec \
         hyperref \
