@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package resumakr.compiler.v1;
+
+option go_package = "jakes-resume-compiler/proto/compilerpb";
+
+service Compiler {
+  rpc Compile(CompileRequest) returns (CompileResponse);
+}
+
+message CompileRequest {
+  string tex_source = 1;
+}
+
+message CompileResponse {
+  bytes pdf = 1;
+}

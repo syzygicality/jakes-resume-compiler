@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 
 	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/grpc/compiler"
 	"jakes-resume-compiler/server/grpc/health"
 	"jakes-resume-compiler/server/grpc/platform/middleware"
 )
@@ -21,7 +22,7 @@ func Start(app *config.App) {
 
 	health.RegisterServer(srv)
 
-	// TODO: register compiler service (generated from .proto)
+	compiler.RegisterServer(srv)
 
 	log.Println("listening on :8080")
 

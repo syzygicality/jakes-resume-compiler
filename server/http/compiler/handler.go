@@ -8,19 +8,10 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 
 	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/http/platform/utils"
 )
-
-// Must stay below main.go's WriteTimeout, or the write deadline fires first and
-// the 504 never reaches the client.
-const compileTimeout = 5 * time.Second
-
-// Preamble precompiled by the Dockerfile's fmt-builder stage. Named, not pathed:
-// TEXFORMATS resolves it.
-const preambleFormat = "preamble"
 
 func SetupHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("POST /compile", compileHandler)
@@ -67,12 +58,12 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdfPath := strings.TrimSuffix(texPath, ".tex") + ".pdf"
 
-	ctx, cancel := context.WithTimeout(r.Context(), compileTimeout)
+	ctx, cancel := context.WithTimeout(r.Context(), config.CompileTimeout)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx,
 		"pdflatex",
-		"-fmt="+preambleFormat,
+		"-fmt="+config.PreambleFormat,
 		"-interaction=nonstopmode",
 		"-no-shell-escape",
 		"-output-directory", dir,
