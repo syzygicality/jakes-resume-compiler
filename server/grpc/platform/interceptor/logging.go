@@ -1,4 +1,4 @@
-package middleware
+package interceptor
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func loggingInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {

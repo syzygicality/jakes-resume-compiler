@@ -1,9 +1,9 @@
-package middleware
+package interceptor
 
 import (
 	"google.golang.org/grpc"
 
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func SetupInterceptors(app *config.App) grpc.ServerOption {

@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/http/compiler"
 	"jakes-resume-compiler/server/http/health"
 	"jakes-resume-compiler/server/http/platform/middleware"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func Start(app *config.App) {

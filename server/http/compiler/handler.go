@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/http/platform/utils"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func SetupHandlers(mux *http.ServeMux) {

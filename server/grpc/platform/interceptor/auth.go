@@ -1,4 +1,4 @@
-package middleware
+package interceptor
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 var publicMethods = map[string]bool{

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func requestIDMiddleware(next http.Handler) http.Handler {

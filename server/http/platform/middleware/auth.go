@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 	"net/http"
 )
 

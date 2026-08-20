@@ -5,9 +5,9 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/grpc"
 	"jakes-resume-compiler/server/http"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func main() {

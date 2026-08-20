@@ -2,7 +2,7 @@ package compiler
 
 import (
 	"errors"
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 	"strings"
 )
 

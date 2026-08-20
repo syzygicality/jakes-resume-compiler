@@ -6,10 +6,10 @@ import (
 
 	"google.golang.org/grpc"
 
-	"jakes-resume-compiler/server/config"
 	"jakes-resume-compiler/server/grpc/compiler"
 	"jakes-resume-compiler/server/grpc/health"
-	"jakes-resume-compiler/server/grpc/platform/middleware"
+	"jakes-resume-compiler/server/grpc/platform/interceptor"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 func Start(app *config.App) {
@@ -18,7 +18,7 @@ func Start(app *config.App) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	srv := grpc.NewServer(middleware.SetupInterceptors(app))
+	srv := grpc.NewServer(interceptor.SetupInterceptors(app))
 
 	health.RegisterServer(srv)
 

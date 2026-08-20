@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"jakes-resume-compiler/server/config"
 	"net/http"
+
+	"jakes-resume-compiler/server/shared/config"
 )
 
 type Middleware func(http.Handler) http.Handler

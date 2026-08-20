@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	compilerpb "jakes-resume-compiler/proto"
-	"jakes-resume-compiler/server/config"
+	"jakes-resume-compiler/server/shared/config"
 )
 
 type compilerServer struct {

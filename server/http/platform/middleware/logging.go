@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"jakes-resume-compiler/server/config"
 	"log/slog"
 	"net/http"
 	"os"
 	"time"
+
+	"jakes-resume-compiler/server/shared/config"
 )
 
 type statusRecorder struct {
