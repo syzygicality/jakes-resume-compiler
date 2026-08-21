@@ -6,9 +6,10 @@ import (
 	"runtime/debug"
 )
 
-func HTTPError(err error, w http.ResponseWriter, r *http.Request, logMsg string, status int) {
+func HTTPError(err error, w http.ResponseWriter, r *http.Request, logMsg string, status int, reqID string) {
 	if status >= 500 {
 		slog.Error(logMsg,
+			"request-id", reqID,
 			"error", err,
 			"stack", string(debug.Stack()),
 			"path", r.URL.Path,
@@ -16,6 +17,7 @@ func HTTPError(err error, w http.ResponseWriter, r *http.Request, logMsg string,
 		)
 	} else {
 		slog.Warn(logMsg,
+			"request-id", reqID,
 			"error", err,
 			"path", r.URL.Path,
 			"method", r.Method,

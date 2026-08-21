@@ -8,15 +8,17 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func ServerError(err error, method string, logMsg string, code codes.Code) error {
+func ServerError(err error, method string, logMsg string, code codes.Code, reqID string) error {
 	if code == codes.Internal || code == codes.Unknown {
 		slog.Error(logMsg,
+			"request-id", reqID,
 			"error", err,
 			"stack", string(debug.Stack()),
 			"method", method,
 		)
 	} else {
 		slog.Warn(logMsg,
+			"request-id", reqID,
 			"error", err,
 			"method", method,
 		)

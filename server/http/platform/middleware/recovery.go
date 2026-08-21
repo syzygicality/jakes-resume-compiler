@@ -14,7 +14,7 @@ func recoveryMiddleware(next http.Handler) http.Handler {
 				if !ok {
 					err = fmt.Errorf("%v", rec)
 				}
-				utils.HTTPError(err, w, r, "panic recovered", http.StatusInternalServerError)
+				utils.HTTPError(err, w, r, "panic recovered", http.StatusInternalServerError, "not available")
 			}
 		}()
 		next.ServeHTTP(w, r)

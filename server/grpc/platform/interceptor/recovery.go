@@ -17,7 +17,7 @@ func recoveryInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInf
 			if !ok {
 				recErr = fmt.Errorf("%v", rec)
 			}
-			err = utils.ServerError(recErr, info.FullMethod, "panic recovered", codes.Internal)
+			err = utils.ServerError(recErr, info.FullMethod, "panic recovered", codes.Internal, "not available")
 		}
 	}()
 	return handler(ctx, req)
