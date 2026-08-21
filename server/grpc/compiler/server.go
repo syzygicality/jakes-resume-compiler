@@ -15,6 +15,7 @@ import (
 
 	compilerpb "jakes-resume-compiler/proto"
 	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 type compilerServer struct {
@@ -39,7 +40,7 @@ func (s *compilerServer) Compile(ctx context.Context, req *compilerpb.CompileReq
 		return nil, status.Error(codes.InvalidArgument, "source validation failure: "+err.Error())
 	}
 
-	reqID := config.GetRequestID(ctx)
+	reqID := services.GetRequestID(ctx)
 
 	dir, err := os.MkdirTemp("", "resume-dir")
 	if err != nil {

@@ -18,8 +18,6 @@ func Start(app *config.App) {
 
 	compiler.SetupHandlers(mux)
 
-	middleware.SetupLogger(app.Settings.Prod)
-
 	var handler http.Handler = middleware.SetupMiddleware(mux, app)
 
 	log.Println("listening on :8080")

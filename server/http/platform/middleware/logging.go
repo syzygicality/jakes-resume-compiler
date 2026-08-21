@@ -3,10 +3,9 @@ package middleware
 import (
 	"log/slog"
 	"net/http"
-	"os"
 	"time"
 
-	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 type statusRecorder struct {
@@ -27,19 +26,11 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(rec, r)
 
 		slog.Info("request",
-			"request_id", config.GetRequestID(r.Context()),
+			"request_id", services.GetRequestID(r.Context()),
 			"method", r.Method,
 			"path", r.URL.Path,
 			"status", rec.status,
 			"duration", time.Since(start),
 		)
 	})
-}
-
-func SetupLogger(prod bool) {
-	var logger slog.Handler = slog.NewTextHandler(os.Stdout, nil)
-	if prod {
-		logger = slog.NewJSONHandler(os.Stdout, nil)
-	}
-	slog.SetDefault(slog.New(logger))
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 func requestIDMiddleware(next http.Handler) http.Handler {
@@ -12,7 +13,7 @@ func requestIDMiddleware(next http.Handler) http.Handler {
 		reqID := r.Header.Get(config.RequestIDHeader)
 
 		if reqID == "" {
-			reqID = config.NewRequestID()
+			reqID = services.NewRequestID()
 		}
 
 		ctx := context.WithValue(r.Context(), config.RequestIDKey, reqID)

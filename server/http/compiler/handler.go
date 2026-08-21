@@ -11,6 +11,7 @@ import (
 
 	"jakes-resume-compiler/server/http/platform/utils"
 	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 func SetupHandlers(mux *http.ServeMux) {
@@ -30,7 +31,7 @@ func compileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	reqID := config.GetRequestID(r.Context())
+	reqID := services.GetRequestID(r.Context())
 
 	dir, err := os.MkdirTemp("", "resume-dir")
 	if err != nil {

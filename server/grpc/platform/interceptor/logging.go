@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 
-	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 func loggingInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
@@ -18,7 +18,7 @@ func loggingInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo
 	st, _ := status.FromError(err)
 
 	slog.Info("request",
-		"request_id", config.GetRequestID(ctx),
+		"request_id", services.GetRequestID(ctx),
 		"method", info.FullMethod,
 		"duration", time.Since(start),
 		"code", st.Code(),

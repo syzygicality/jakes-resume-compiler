@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	"jakes-resume-compiler/server/shared/config"
+	"jakes-resume-compiler/server/shared/services"
 )
 
 func requestIDInterceptor(ctx context.Context, req any, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
@@ -19,7 +20,7 @@ func requestIDInterceptor(ctx context.Context, req any, _ *grpc.UnaryServerInfo,
 	}
 
 	if reqID == "" {
-		reqID = config.NewRequestID()
+		reqID = services.NewRequestID()
 	}
 
 	ctx = context.WithValue(ctx, config.RequestIDKey, reqID)
