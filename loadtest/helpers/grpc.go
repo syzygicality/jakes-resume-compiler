@@ -1,39 +1,29 @@
 package helpers
 
 import (
-	"bytes"
-	"encoding/json"
+	"context"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"sync"
 	"time"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
+
+	compilerpb "jakes-resume-compiler/proto"
+	"jakes-resume-compiler/server/shared/config"
 )
 
-func pingForCompile(url string, source []byte, apiKey string) (int, error) {
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(source))
-	if err != nil {
-		return 0, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-API-Key", apiKey)
+func compileRPC(ctx context.Context, client compilerpb.CompilerClient, source string, apiKey string) error {
+	ctx = metadata.AppendToOutgoingContext(ctx, config.APIKeyHeader, apiKey)
 
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return 0, err
-	}
-	defer res.Body.Close()
-
-	if _, err := io.Copy(io.Discard, res.Body); err != nil {
-		return 0, err
-	}
-
-	return res.StatusCode, nil
+	_, err := client.Compile(ctx, &compilerpb.CompileRequest{TexSource: source})
+	return err
 }
 
-func TestCompile(url string, apiKey string, concurrency int, totalRequests int) {
-	fmt.Println("URL:", url)
+func TestGRPCCompile(target string, apiKey string, concurrency int, totalRequests int) {
+	fmt.Println("Target:", target)
 	fmt.Println("Concurrency:", concurrency)
 	fmt.Println("Total requests:", totalRequests)
 
@@ -44,11 +34,14 @@ func TestCompile(url string, apiKey string, concurrency int, totalRequests int) 
 		return
 	}
 
-	body, err := json.Marshal(map[string]string{"source": string(source)})
+	conn, err := grpc.NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		fmt.Println("failed to marshal request body:", err)
+		fmt.Println("failed to create client:", err)
 		return
 	}
+	defer conn.Close()
+
+	client := compilerpb.NewCompilerClient(conn)
 
 	var latencySum time.Duration
 	var successes int
@@ -64,13 +57,8 @@ func TestCompile(url string, apiKey string, concurrency int, totalRequests int) 
 			defer func() { <-sem }()
 
 			reqStart := time.Now()
-			statusCode, err := pingForCompile(url, body, apiKey)
-			if err != nil || statusCode >= 400 {
-				if err != nil {
-					fmt.Println("error:", err)
-				} else {
-					fmt.Println("bad status:", statusCode)
-				}
+			if err := compileRPC(context.Background(), client, string(source), apiKey); err != nil {
+				fmt.Println("error:", err)
 				return
 			}
 			reqElapsed := time.Since(reqStart)
