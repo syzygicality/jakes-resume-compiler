@@ -1,0 +1,174 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{fontawesome}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge Eddie Wang} \\ \vspace{1pt}
+    \small (587) 575-9291 $|$ \href{mailto:eddie.wang1@uwaterloo.ca}{\underline{eddie.wang1@uwaterloo.ca}} $|$
+    \href{https://www.linkedin.com/in/eddie-p-wang/}{\underline{LinkedIn}} $|$
+    \href{https://github.com/Syzygicality}{\underline{GitHub}} $|$
+    \href{https://www.edisonwang.dev/}{\underline{Personal Website}}\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+\resumeSubheading
+      {University of Waterloo}{Waterloo, ON}
+      {Bachelor of Computer Science}{Sept 2025 - May 2030}
+\resumeSubHeadingListEnd
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+\textbf{Languages}{: Python, JavaScript, TypeScript, SQL, C, HTML/CSS, Bash} \\
+\textbf{Frameworks/Libraries}{: FastAPI, Django, Django REST Framework, Pytest, Playwright, Streamlit, Node.js, Next.js, React.js, Tailwind CSS, Bootstrap, Fastify, Express.js} \\
+\textbf{Tools/Technologies}{: Git, Github/Azure DevOps, Docker, Celery, Postman, Insomnia, Tailscale, Linux, Keycloak, Vercel, Render, VS Code, Visual Studio, Claude Code et al.} \\
+\textbf{Databases}{: PostgreSQL, MS SQL Server, MySQL/MariaDB, Redis, MongoDB, Supabase} \\
+}}
+  \end{itemize}%-----------EXPERIENCE-----------
+\section{Work Experience}
+  \resumeSubHeadingListStart
+\resumeSubheading
+      {Back End Developer}{Sept 2025 - Present}
+      {UW Orbital}{Waterloo, ON}
+\resumeItemListStart
+\resumeItem{Implemented OAuth2/JWT authentication and RBAC via Keycloak to secure satellite telemetry data and mission control infrastructure, preventing unauthorized access to ground station systems}
+\resumeItem{Developed mission-critical Data Access Layer in FastAPI by implementing repository patterns through class inheritance, consilodating database operations and reducing SQLModel ORM code duplication by \textbf{50\%}}
+\resumeItem{Engineered automated ETL pipeline and internal CLI tool using Python scripts, processing and migrating \textbf{90k+} rows of government data to validate amateur radio operator certifications for public-facing usage}
+\resumeItem{Documented satellite system integration and ground station architecture to reduce onboarding time by \textbf{40\%}}
+\resumeItem{Conducted code reviews on \textbf{15+ pull requests}, maintaining code quality, test coverage, and Agile development}
+\resumeItemListEnd
+\resumeSubheading
+      {Application Programmer}{May 2026 - Present}
+      {Ontario Government (MPBSDP)}{Toronto, ON}
+\resumeSubheading
+      {Math Contest Prep Club Founder}{Sept 2024 - Apr 2025}
+      {Assumption Junior/Senior High School}{Cold Lake, AB}
+\resumeItemListStart
+\resumeItem{Established CEMC math competitions at AJSH through self-initiative, cultivating \textbf{20+ regular participants}}
+\resumeItem{Created preparation club to prepare participants and promote competitions, maintaining \textbf{10+ active members}}
+\resumeItem{Collaborated with school administrators to organize contest logistics, ensuring proper competition conditions}
+\resumeItemListEnd
+\resumeSubheading
+      {Lifeguard}{Jan 2025 - June 2025}
+      {Canadiam Forces Morale and Welfare Services}{Cold Lake, AB}
+\resumeItemListStart
+\resumeItem{Ensured safety of \textbf{150+ concurrent patrons} through vigilance and enforcing protocol over \textbf{300+ logged hours}}
+\resumeItem{Coordinated with aquatic team members using clear communication to resolve several high-stress situations}
+\resumeItem{Maintained detailed cleaning and maintenance logs during shifts to prevent patron illness and accidents}
+\resumeItemListEnd
+\resumeSubHeadingListEnd%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+\resumeProjectHeading
+      {\href{https://github.com/Syzygicality/fastapi-hackplate}{\faLink} \textbf{Hackplate (FastAPI Meta-framework)} $|$ \emph{Python, FastAPI, SQLAlchemy, Docker, Supabase, PostgreSQL, Keycloak, Auth0, Claude Agents}}{}
+\resumeItemListStart
+\resumeItem{Engineered a customizable agent-first environment with FastAPI, designed for rapid prototyping and deployment}
+\resumeItem{Architected an AI-native development environment via pre-configured Claude Code permissions, action hooks, and structured context files, enabling autonomous development with multimodal coding agents out of the box}
+\resumeItem{Implemented robust developer CLI and batteries-included boilerplate to eliminate \textbf{6+ hours} of development time}
+\resumeItem{Built a plugin architecture via strategy pattern to enable seamless switching between \textbf{12 backend configurations}}
+\resumeItemListEnd
+\resumeProjectHeading
+      {\href{https://github.com/Syzygicality/mcc-auth}{\faLink} \textbf{MCC Auth (Self-hosted IdP Server)} $|$ \emph{Android Linux, Termux, Bash, Keycloak, PostgreSQL, Runit, Tailscale, Cloudflare}}{}
+\resumeItemListStart
+\resumeItem{Deployed a self-hosted Keycloak authentication server on a repurposed linux device, providing OAuth2/OIDC identity and access management for safety-critical applications on satellite design team}
+\resumeItem{Performed process supervision on API, database, and reverse proxy via Runit to ensure service reliability with \textbf{99\% uptime per month}}
+\resumeItem{Optimized homelab performance through hardware and service configuration, load-tested to handle \textbf{100+ req/s}}
+\resumeItemListEnd
+\resumeProjectHeading
+      {\href{https://github.com/Syzygicality/hivemind}{\faLink} \textbf{Hivemind (Note-Taking Version Control)} $|$ \emph{Python, Django, Django REST Framework, TypeScript, React.js, PostgreSQL}}{}
+\resumeItemListStart
+\resumeItem{Led a \textbf{4-person engineering team} to develop a collaborative note-taking platform within \textbf{36 hours} of coding}
+\resumeItem{Implemented cross-user version control system using PostgreSQL to enable historical diffs and file rollback}
+\resumeItem{Designed user management leveraging Django REST Framework libraries to add vote-based document editing}
+\resumeItemListEnd
+\resumeProjectHeading
+      {\href{https://github.com/Syzygicality/pollboard}{\faLink} \textbf{Pollboard (Social Network API)} $|$ \emph{Python, Django, Django REST Framework, PostgreSQL, Redis, OpenAI API}}{}
+\resumeItemListStart
+\resumeItem{Built a production-ready polling social network web API, optimizing for scalable, low-latency user experience}
+\resumeItem{Developed back-end using Django to leverage robust admin features and popular authentication libraries}
+\resumeItem{Designed relational schema to prioritize user pseudonymization and streamline user analytics on poll interactions}
+\resumeItem{Created auto-moderation system by integrating OpenAI API, safeguarding against harmful and unsafe content}
+\resumeItemListEnd
+\resumeProjectHeading
+      {\href{https://github.com/Syzygicality/seabottle}{\faLink} \textbf{Seabottle (Time Capsule Journal)} $|$ \emph{Python, FastAPI, PostgreSQL, Redis, Celery, Docker}}{}
+\resumeItemListStart
+\resumeItem{Built an asynchronous public-facing REST API leveraging FastAPI, enabling users to message their future selves}
+\resumeItem{Implemented fault-tolerant email features using Redis and Celery to send user notifications when messages release}
+\resumeItem{Deployed the back-end application via Docker on Render, stress-tested to handle \textbf{3000+ requests per minute}}
+\resumeItemListEnd
+\resumeSubHeadingListEnd\end{document}
