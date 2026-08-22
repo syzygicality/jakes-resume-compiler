@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # ---- Stage 1: build Go binary ----
 FROM golang:1.25-alpine AS builder
 
@@ -9,12 +11,28 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /app/compiler .
 
-# ---- Stage 2: pinned TeX Live base, shared by the format builder and the runtime ----
-#
-# Built from latex/Dockerfile.base and pushed to GHCR. Avoids hitting a TeX
-# Live historic mirror on every build. Only rebuilt when the vendored
-# package set changes. See latex/Dockerfile.base for the tlmgr install list.
-FROM ghcr.io/syzygicality/jrc-texlive-base:2025 AS texlive
+# ---- Stage 2: TeX Live tree, shared by the format builder and the runtime ----
+FROM debian:trixie-slim AS texlive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    texlive-latex-base \
+    perl \
+    wget \
+    ca-certificates \
+    xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN tlmgr init-usertree \
+    && tlmgr option repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2025/tlnet-final \
+    && tlmgr install \
+        titlesec \
+        hyperref \
+        enumitem \
+        fancyhdr \
+        preprint \
+        marvosym \
+        fontawesome \
+    && rm -rf /root/texmf/web2c/*.log
 
 # ---- Stage 3: precompile the resume preamble into a LaTeX format file ----
 #
