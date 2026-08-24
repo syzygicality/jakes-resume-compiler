@@ -17,6 +17,8 @@ type TestConfig struct {
 	ConcurrencyTests []int  `json:"concurrencyTests"`
 	TotalRequests    int    `json:"totalRequests"`
 	Host             string `json:"host"`
+	Mode             string `json:"mode"`
+	UseTLS           bool   `json:"useTLS"`
 }
 
 func main() {
@@ -30,19 +32,20 @@ func main() {
 	}
 	godotenv.Load()
 	apiKey := os.Getenv("API_KEY")
-	mode := os.Getenv("MODE")
-	if mode == "HTTP" {
+	switch cfg.Mode {
+	case "HTTP":
 		url := fmt.Sprintf("%s/compile", cfg.Host)
 
 		for _, c := range cfg.ConcurrencyTests {
 			helpers.TestHTTPCompile(url, apiKey, c, cfg.TotalRequests)
 		}
-		return
-	}
+	case "gRPC":
+		target := strings.TrimPrefix(strings.TrimPrefix(cfg.Host, "http://"), "https://")
 
-	target := strings.TrimPrefix(strings.TrimPrefix(cfg.Host, "http://"), "https://")
-
-	for _, c := range cfg.ConcurrencyTests {
-		helpers.TestGRPCCompile(target, apiKey, c, cfg.TotalRequests)
+		for _, c := range cfg.ConcurrencyTests {
+			helpers.TestGRPCCompile(target, apiKey, c, cfg.TotalRequests, cfg.UseTLS)
+		}
+	default:
+		panic("Mode must be either HTTP or gRPC.")
 	}
 }
