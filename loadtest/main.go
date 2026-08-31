@@ -14,11 +14,11 @@ import (
 // run with: go run ./loadtest
 
 type TestConfig struct {
-	ConcurrencyTests []int  `json:"concurrencyTests"`
-	TotalRequests    int    `json:"totalRequests"`
-	Host             string `json:"host"`
-	Mode             string `json:"mode"`
-	UseTLS           bool   `json:"useTLS"`
+	ConcurrencyTests []int    `json:"concurrencyTests"`
+	TotalRequests    int      `json:"totalRequests"`
+	Host             string   `json:"host"`
+	Protocols        []string `json:"protocols"`
+	UseTLS           bool     `json:"useTLS"`
 }
 
 func main() {
@@ -32,20 +32,32 @@ func main() {
 	}
 	godotenv.Load()
 	apiKey := os.Getenv("API_KEY")
-	switch cfg.Mode {
-	case "HTTP":
-		url := fmt.Sprintf("%s/compile", cfg.Host)
 
-		for _, c := range cfg.ConcurrencyTests {
-			helpers.TestHTTPCompile(url, apiKey, c, cfg.TotalRequests)
-		}
-	case "gRPC":
-		target := strings.TrimPrefix(strings.TrimPrefix(cfg.Host, "http://"), "https://")
+	// The server speaks both protocols on one port, so an empty list means
+	// exercise both against the same host.
+	protocols := cfg.Protocols
+	if len(protocols) == 0 {
+		protocols = []string{"HTTP", "gRPC"}
+	}
 
-		for _, c := range cfg.ConcurrencyTests {
-			helpers.TestGRPCCompile(target, apiKey, c, cfg.TotalRequests, cfg.UseTLS)
+	for _, protocol := range protocols {
+		fmt.Println("=====", protocol, "=====")
+
+		switch protocol {
+		case "HTTP":
+			url := fmt.Sprintf("%s/compile", cfg.Host)
+
+			for _, c := range cfg.ConcurrencyTests {
+				helpers.TestHTTPCompile(url, apiKey, c, cfg.TotalRequests)
+			}
+		case "gRPC":
+			target := strings.TrimPrefix(strings.TrimPrefix(cfg.Host, "http://"), "https://")
+
+			for _, c := range cfg.ConcurrencyTests {
+				helpers.TestGRPCCompile(target, apiKey, c, cfg.TotalRequests, cfg.UseTLS)
+			}
+		default:
+			panic("protocols entries must be either HTTP or gRPC.")
 		}
-	default:
-		panic("Mode must be either HTTP or gRPC.")
 	}
 }

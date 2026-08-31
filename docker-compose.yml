@@ -8,7 +8,6 @@ services:
       - .env
     environment:
       - PROD=true
-      - MODE=gRPC
   api-image:
     platform: linux/amd64
     image: ghcr.io/syzygicality/jakes-resume-compiler:latest

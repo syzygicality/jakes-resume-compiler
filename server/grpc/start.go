@@ -1,9 +1,6 @@
 package grpc
 
 import (
-	"log"
-	"net"
-
 	"google.golang.org/grpc"
 
 	"jakes-resume-compiler/server/grpc/compiler"
@@ -12,21 +9,15 @@ import (
 	"jakes-resume-compiler/server/shared/config"
 )
 
-func Start(app *config.App) {
-	lis, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
+// Server builds the gRPC server with its services registered. The caller owns
+// the listener: this is served through ServeHTTP off the shared HTTP/2 port
+// rather than Serve(lis), so no listener is bound here.
+func Server(app *config.App) *grpc.Server {
 	srv := grpc.NewServer(interceptor.SetupInterceptors(app))
 
 	health.RegisterServer(srv)
 
 	compiler.RegisterServer(srv)
 
-	log.Println("listening on :8080")
-
-	if err := srv.Serve(lis); err != nil {
-		log.Fatalf("grpc server failed: %v", err)
-	}
+	return srv
 }

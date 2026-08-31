@@ -5,8 +5,7 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"jakes-resume-compiler/server/grpc"
-	"jakes-resume-compiler/server/http"
+	"jakes-resume-compiler/server"
 	"jakes-resume-compiler/server/shared/config"
 )
 
@@ -17,9 +16,5 @@ func main() {
 
 	app := config.NewApp()
 
-	if app.Settings.Mode == "HTTP" {
-		http.Start(app)
-	} else {
-		grpc.Start(app)
-	}
+	server.Start(app)
 }

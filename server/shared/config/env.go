@@ -8,7 +8,6 @@ import (
 type EnvSettings struct {
 	APIKey string
 	Prod   bool
-	Mode   string
 }
 
 func MustGetKey(key string) string {
@@ -32,13 +31,8 @@ func newEnvSettings() EnvSettings {
 	if err != nil {
 		panic(err)
 	}
-	mode := GetKey("MODE", "HTTP")
-	if mode != "HTTP" && mode != "gRPC" {
-		panic("MODE= must either be HTTP or gRPC")
-	}
 	return EnvSettings{
 		APIKey: MustGetKey("API_KEY"),
 		Prod:   prod,
-		Mode:   mode,
 	}
 }
